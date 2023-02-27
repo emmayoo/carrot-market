@@ -9,12 +9,16 @@
 ### NextJS + Typescript
 * `npx create-next-app@latest --typescript`
 * React 18
-### tailwind
+### Tailwind
 * `npm install -D tailwindcss autoprefixer`
 * `npx tailwind init -p`
   * Created Tailwind CSS config file: tailwind.config.js
   * Created PostCSS config file: postcss.config.js
-* Global Styles in NextJS
+* **Tailwind CSS IntelliSense**
+  * Tailwind 클래스명 자동 완성 Extension
+
+## About NextJS Framework
+### Global Styles in NextJS
   * [참고 영상](https://nomadcoders.co/nextjs-fundamentals/lectures/3443)
   * App Component
     * `_app.js` (**파일명** 중요! 단, _app.js에 클래스명은 중요하지 않음)
