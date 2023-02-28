@@ -93,3 +93,27 @@
       This input is invalid
     </span>
   ```
+* selection, open
+  ```html
+    <details className="select-none open:text-white open:bg-purple-300">
+      <summary className="cursor-pointer">Toggle</summary>
+      <span>Content</span>
+    </details>
+  ```
+  * `select-none`은 화살표 클릭 시, 문자가 선택되는 것 방지
+* marker
+  ```html
+    <ul className="list-decimal marker:text-teal-400">
+      <li>aa</li>
+      <li>bb</li>
+    </ul>
+  ```
+* file
+  ```html
+    <input type="file" className="file:border-0 file:bg-purple-500 file:hover:bg-red-400" />
+  ```
+  * 버튼의 css만 변경함 (버튼 옆 문구 x)
+* first-letter
+  ```html
+    <p className="first-letter:text-7xl">abcd</p>
+  ```
