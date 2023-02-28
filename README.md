@@ -44,7 +44,7 @@
 * [min-h-screen](https://tailwindcss.com/docs/min-height#setting-the-minimum-height)
 * [aspect-square](https://tailwindcss.com/docs/aspect-ratio#browser-support)
 * [ring](https://tailwindcss.com/docs/ring-width)
-  ```html
+  ```jsx
     <button className="w-5 h-5 rounded-full bg-yellow-500 focus:ring-2 ring-offset-2 ring-yellow-500 transition" />
   ```
   * 'focus' modifier를 ring-2에만 쓴 이유 ? ring-offset-2와 ring-yellow-500은 variable일 뿐임
@@ -53,3 +53,43 @@
   * focus : tab 버튼으로 이동되어 활성화 된 상태
 * viewports를 타겟으로 할 때도 사용 가능
   * mobile only, big screen only, 화면 방향, 인쇄시 인쇄 스타일에 따른 스타일 등 조절 가능
+* first, secode, only, odd, even, empty
+  ```jsx
+    {[1, 2, 3, 4].map((i) => (
+      <div key={i} className="odd:bg-blue-50 even:bg-yellow-50 first:bg-teal-50 last:bg-amber-50"
+      >
+        <span className="font-semibold">{i}</span>
+      </div>
+    ))}
+  ```
+  ```jsx
+    {[1].map((i) => (
+      <div key={i} className="only:bg-blue-50">
+        <span className="font-semibold">{i}</span>
+      </div>
+    ))}
+  ```
+  ```jsx
+    {["a", "b", "c", ""].map((c, i) => (
+      <li className="bg-red-500 py-2 empty:hidden" key={i}>
+        {c}
+      </li>
+    ))}
+  ```
+* required, invalid, valid, placeholder, placeholder-shown, disabled
+* group
+  ```html
+    <div className="w-full h-full group bg-slate-400">
+      <div className="w-1/2 h-1/2 bg-blue-400 group-hover:bg-red-400">hi</div>
+    </div>
+  ```
+* peer modifier
+  * peer는 peer selector 보다 앞에 와야함
+  * js 없이도 상태를 가지고 노출 여부 제한 가능
+  * 예를 들어, input 태그의 값(state)의 유무로 span 태그 노출 여부를 판단 가능
+  ```html
+    <input type="text" className="peer" required placeholder="Username" />
+    <span className="hidden peer-invalid:block peer-invalid:text-red-500">
+      This input is invalid
+    </span>
+  ```
