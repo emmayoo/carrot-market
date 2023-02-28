@@ -43,3 +43,13 @@
   * 예를 들어, `top-[-5px]`와 `-top-[5px]` 같음
 * [min-h-screen](https://tailwindcss.com/docs/min-height#setting-the-minimum-height)
 * [aspect-square](https://tailwindcss.com/docs/aspect-ratio#browser-support)
+* [ring](https://tailwindcss.com/docs/ring-width)
+  ```html
+    <button className="w-5 h-5 rounded-full bg-yellow-500 focus:ring-2 ring-offset-2 ring-yellow-500 transition" />
+  ```
+  * 'focus' modifier를 ring-2에만 쓴 이유 ? ring-offset-2와 ring-yellow-500은 variable일 뿐임
+### [Modifiers](https://tailwindcss.com/docs/hover-focus-and-other-states)
+* hover, active, focus 등등
+  * focus : tab 버튼으로 이동되어 활성화 된 상태
+* viewports를 타겟으로 할 때도 사용 가능
+  * mobile only, big screen only, 화면 방향, 인쇄시 인쇄 스타일에 따른 스타일 등 조절 가능
