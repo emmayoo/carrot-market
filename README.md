@@ -35,3 +35,11 @@
     * 커스텀 App 이외의 파일로부터 global.css를 import 할 수 없음
     * 즉, Custom `<App>` 컴포넌트에서만 `import './styles/xxx.css';` 가능
     * pages나 components에 css를 import하려면 module 형태여야만 함
+
+## Tailwind
+### class 
+* flex + [space](https://tailwindcss.com/docs/space)
+* 클래스명 앞에 음수 붙이면 음수값
+  * 예를 들어, `top-[-5px]`와 `-top-[5px]` 같음
+* [min-h-screen](https://tailwindcss.com/docs/min-height#setting-the-minimum-height)
+* [aspect-square](https://tailwindcss.com/docs/aspect-ratio#browser-support)
