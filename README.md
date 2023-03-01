@@ -132,3 +132,15 @@
     * tailwind.config.js `darkMode: "media"` (default)
   * 어플리케이션에서 다크 모드 설정하려면(toggle), tailwind.config.js  `darkMode: "class"`로 변경하기
     * 'class' 방식에서 다크모드를 활성화하기 위해 필요한 조건은, `dark:` modifier를 쓰는 요쇼의 **부모 요소에 `dark` className을 추가하기**
+
+### JIT (Just In Time) 컴파일러
+* Tailwind CSS 3.0에 JIT가 추가됨
+* 코드를 감시하면서 필요한 클래스를 생성
+* 여러가지 선택자를 중첩하여 사용 가능 `dark:sm:hover:bg-teal-300`
+* 특정한 값을 지정하여 클래스 생성 가능 `bg-[#r5e6aa33]`
+* [개발자 도구 > Element 탭] head에 style 태그를 보면, 파일에 쓰이는 클래스만 추가되어 있는 것을 확인 가능
+* 이 전에 Tailwind CSS 는...
+  * 진짜로 하나의 커다란 CSS 파일이었음
+  * selector을 중첩하여 사용할 수 없음 (조합의 수가 많아 파일이 너무 커지기 때문)
+  * **purging** : 배포 파일의 크기를 줄이기 위해 프로젝트 빌드 시, 모든 파일을 스캔하여 CSS 파일에 포함된 클래스명을 제외한 나머지 클래스를 전부 삭제하는 작업
+  * tailwind 에서 제공하는 클래스 외에 다른 값을 사용하기 위해서는 inline-css를 사용했었음. `<div style={{ fontSize: 300px }} className="text-sm"/>`
