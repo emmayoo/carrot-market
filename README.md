@@ -48,6 +48,8 @@
     <button className="w-5 h-5 rounded-full bg-yellow-500 focus:ring-2 ring-offset-2 ring-yellow-500 transition" />
   ```
   * 'focus' modifier를 ring-2에만 쓴 이유 ? ring-offset-2와 ring-yellow-500은 variable일 뿐임
+* [place-content-center](https://tailwindcss.com/docs/place-content#center)
+
 ### [Modifiers](https://tailwindcss.com/docs/hover-focus-and-other-states)
 * hover, active, focus 등등
   * focus : tab 버튼으로 이동되어 활성화 된 상태
@@ -117,3 +119,9 @@
   ```html
     <p className="first-letter:text-7xl">abcd</p>
   ```
+* sm, md, lg etc..
+  * 작은 크기부터 점차 큰 화면으로 개발 가능
+  ```html
+    <div className="bg-red-500 sm:bg-yellow-500 sm:hover:bg-purple-500 md:bg-green-500">abcd</p>
+  ```
+* [portrait, landscape](https://tailwindcss.com/docs/hover-focus-and-other-states#viewport-orientation)

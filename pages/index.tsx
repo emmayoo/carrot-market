@@ -1,13 +1,7 @@
-import Head from "next/head";
-
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   return (
-    <div className="bg-slate-400 py-20 px-10 grid gap-10 min-h-screen">
-      <div className="bg-white p-6 rounded-3xl shadow-xl">
+    <div className="bg-slate-400 xl:place-content-center py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
+      <div className="bg-white flex flex-col justify-between p-6 rounded-3xl shadow-xl">
         <span className="font-semibold text-3xl">Select Item</span>
         <div className="flex justify-between my-2">
           <span className="text-gray-500">Grey Chair</span>
@@ -30,7 +24,7 @@ export default function Home() {
         </div>
       </div>
       <div className="bg-white overflow-hidden rounded-3xl shadow-xl">
-        <div className="bg-blue-500 p-6 pb-14 flex justify-between">
+        <div className="portrait:bg-indigo-600 landscape:bg-teal-500 p-6 pb-14 xl:pb-40">
           <span className="text-white text-2xl">Profile</span>
           <span className="text-white text-2xl">Cart</span>
         </div>
@@ -46,13 +40,13 @@ export default function Home() {
               <span className="font-medium">$340</span>
             </div>
           </div>
-          <div className="relative  flex flex-col items-center -mt-10 -mb-5">
+          <div className="relative flex flex-col items-center -mt-10 -mb-5">
             <span className="text-lg font-medium">Tony Molloy</span>
             <span className="text-sm text-gray-500">미국</span>
           </div>
         </div>
       </div>
-      <div className="bg-white p-6 rounded-3xl shadow-xl">
+      <div className="bg-white p-6 rounded-3xl shadow-xl lg:col-span-2 xl:col-span-1">
         <div className="flex mb-5 justify-between items-center">
           <span>⬅️</span>
           <div className="space-x-3">
