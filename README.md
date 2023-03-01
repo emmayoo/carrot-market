@@ -125,3 +125,10 @@
     <div className="bg-red-500 sm:bg-yellow-500 sm:hover:bg-purple-500 md:bg-green-500">abcd</p>
   ```
 * [portrait, landscape](https://tailwindcss.com/docs/hover-focus-and-other-states#viewport-orientation)
+* dark
+  * Tailwind css의 dark mode는 기본적으로 브라우저 설정을 따름
+    * 즉, 컴퓨터 시스템 설정에 따름
+    * 예를 들어, Window: 개인 설정 > 색 > 색 선택
+    * tailwind.config.js `darkMode: "media"` (default)
+  * 어플리케이션에서 다크 모드 설정하려면(toggle), tailwind.config.js  `darkMode: "class"`로 변경하기
+    * 'class' 방식에서 다크모드를 활성화하기 위해 필요한 조건은, `dark:` modifier를 쓰는 요쇼의 **부모 요소에 `dark` className을 추가하기**
