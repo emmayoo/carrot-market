@@ -157,3 +157,8 @@
 ## Tips
 ### icons
 * [heroicons](https://heroicons.com/)
+### <label> tag "htmlFor" attribute
+  ```html
+    <label htmlFor="price">price</label>
+    <input id="price"></div>
+  ```
