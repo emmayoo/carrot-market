@@ -4,7 +4,6 @@
 * 프론트엔드 & 백엔드: NextJS (+Serverless)
 * 디플로이: Vercel
 
-
 ## Install
 ### NextJS + Typescript
 * `npx create-next-app@latest --typescript`
@@ -35,6 +34,10 @@
     * 커스텀 App 이외의 파일로부터 global.css를 import 할 수 없음
     * 즉, Custom `<App>` 컴포넌트에서만 `import './styles/xxx.css';` 가능
     * pages나 components에 css를 import하려면 module 형태여야만 함
+### Routing
+* pages 폴더에 페이지들을 만들면 다른 작업 없이 Routing 처리가 됨
+* Dynamic Routes : 파일명에 대괄호([]) 활용
+  * 예를 들어, `pages/items/[id].tsx`은 `http://localhost:3000/items/2`로 접근 가능
 
 ## Tailwind
 ### class 
@@ -150,3 +153,7 @@
 ### Plugins
 * @tailwindcss/forms
   * Form의 기본 스타일을 갖도록 해주는 플러그인
+
+## Tips
+### icons
+* [heroicons](https://heroicons.com/)
