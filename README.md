@@ -49,6 +49,8 @@
   ```
   * 'focus' modifier를 ring-2에만 쓴 이유 ? ring-offset-2와 ring-yellow-500은 variable일 뿐임
 * [place-content-center](https://tailwindcss.com/docs/place-content#center)
+* [appearance-none](https://tailwindcss.com/docs/appearance) : reset any browser specific styling on an element
+* [select-text](https://tailwindcss.com/docs/user-select#disabling-text-selection)
 
 ### [Modifiers](https://tailwindcss.com/docs/hover-focus-and-other-states)
 * hover, active, focus 등등
@@ -144,3 +146,7 @@
   * selector을 중첩하여 사용할 수 없음 (조합의 수가 많아 파일이 너무 커지기 때문)
   * **purging** : 배포 파일의 크기를 줄이기 위해 프로젝트 빌드 시, 모든 파일을 스캔하여 CSS 파일에 포함된 클래스명을 제외한 나머지 클래스를 전부 삭제하는 작업
   * tailwind 에서 제공하는 클래스 외에 다른 값을 사용하기 위해서는 inline-css를 사용했었음. `<div style={{ fontSize: 300px }} className="text-sm"/>`
+
+### Plugins
+* @tailwindcss/forms
+  * Form의 기본 스타일을 갖도록 해주는 플러그인
