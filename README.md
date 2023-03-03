@@ -42,6 +42,7 @@
 ## Tailwind
 ### class 
 * flex + [space](https://tailwindcss.com/docs/space)
+  * reverse : 순서 뒤집기
 * 클래스명 앞에 음수 붙이면 음수값
   * 예를 들어, `top-[-5px]`와 `-top-[5px]` 같음
 * [min-h-screen](https://tailwindcss.com/docs/min-height#setting-the-minimum-height)
@@ -54,6 +55,15 @@
 * [place-content-center](https://tailwindcss.com/docs/place-content#center)
 * [appearance-none](https://tailwindcss.com/docs/appearance) : reset any browser specific styling on an element
 * [select-text](https://tailwindcss.com/docs/user-select#disabling-text-selection)
+* [divide](https://tailwindcss.com/docs/divide-width)
+  * `divide-y-2` === `border-b-2 & last:border-b-0`
+* inset
+  ```css
+    .inset-x-0 {
+      left: 0px;
+      right: 0px;
+    }
+  ```
 
 ### [Modifiers](https://tailwindcss.com/docs/hover-focus-and-other-states)
 * hover, active, focus 등등
