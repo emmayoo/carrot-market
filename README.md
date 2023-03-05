@@ -175,3 +175,8 @@
     <label htmlFor="price">price</label>
     <input id="price"></div>
   ```
+### <div>
+* 가운데 정렬하기 위한 조건
+  * width 설정
+  * display: block
+  * margin: auto
