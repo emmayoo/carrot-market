@@ -64,6 +64,9 @@
       right: 0px;
     }
   ```
+* [aspect](https://tailwindcss.com/docs/aspect-ratio#setting-the-aspect-ratio)
+  * `aspect-video` : 16:9 비율로 자동으로 계산
+  * `aspect-sqaure w-full rounded-full`
 
 ### [Modifiers](https://tailwindcss.com/docs/hover-focus-and-other-states)
 * hover, active, focus 등등
