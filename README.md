@@ -3,6 +3,7 @@
 * 언어: Next.JS, Prisma, Tailwind, Serverless
 * 프론트엔드 & 백엔드: NextJS (+Serverless)
 * 디플로이: Vercel
+* 깃헙 (강의 자료) : [nomadcoders/carrot-market](https://github.com/nomadcoders/carrot-market)
 
 ## Install
 ### NextJS + Typescript
