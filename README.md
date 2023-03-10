@@ -168,6 +168,62 @@
 * @tailwindcss/forms
   * Form의 기본 스타일을 갖도록 해주는 플러그인
 
+## Prisma
+* Node.js와 Typescript ORM
+* SQL 없이 JS(TS) 코드로 DB와 상호작용
+  * TS를 사용하여 오류 발생 전에 체크 가능
+* PostgreSQL, MySQL, SQL Server, SQLite, MongoD 제공
+  * Prisma를 사용하면 어떤 DB에 연결해도 큰 차이 없음
+### How to use
+* `schema.prisma` 파일
+  * js로 DB 구조 및 타입 정의
+  * prisma는 주어진 정보를 통해 client 생성 (자동 완성 기능 제공)
+* Prima Studio
+  * Visual Database Browser
+  * DB를 위한 Admin Panel
+* [Prisma Extention VSC](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
+  * syntax highlighting, formatting, auto-completion, jump-to-definition and linting for .prisma files.
+### Install
+* `npm i prisma -D`
+* `npx prisma init`
+  * prisma 폴더 생성
+  * .env 파일 생성
+* Next steps 중 (in 터미널 콘솔)
+  * `.env` 파일에 DATABASE_URL를 PlanetScale 주소로 변경
+  * `schema.prisma` 에 privider를 "mysql"로 변경
+### Model Example
+* `schema.prisma` 파일에 User model 정의
+```prisma
+  model User {
+    id  Int @id @default(autoincrement())
+    phone Int? @unique
+    email String? @unique
+    name String
+    avatar String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  }
+```
+  * @id : primary key
+  * @default(autoincrement()) : 따로 건들지 않으면 1, 2, 3 으로 증가
+  * ? (optional) : not required
+  * @unique : unique value
+  * @updatedAt : updated when user's info changed 
+
+## [PlanetScale](https://planetscale.com/)
+* MySQL과 호환되는 serverless DB platform
+  * DB platform : they give you DB
+  * serverless : we don't have to manage, maintain, secure, upgrade and those things for a server
+  * **MySQL-compatible**
+  * downtime : db가 꺼지지 않음
+* **[Vitess](https://vitess.io/)**
+  * auto-scaling
+  * High Availability : db의 복사본을 저장 (replica)
+  * etc...
+* CLI
+  * 좋은 개발자 경험 (DX) 제공
+  * create Branch for DB (like git) 
+
 ## Tips
 ### icons
 * [heroicons](https://heroicons.com/)
