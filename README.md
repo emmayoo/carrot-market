@@ -17,7 +17,7 @@
 * **Tailwind CSS IntelliSense**
   * Tailwind 클래스명 자동 완성 Extension
 
-## About NextJS Framework
+## NextJS Framework
 ### Global Styles in NextJS
   * [참고 영상](https://nomadcoders.co/nextjs-fundamentals/lectures/3443)
   * App Component
@@ -39,6 +39,9 @@
 * pages 폴더에 페이지들을 만들면 다른 작업 없이 Routing 처리가 됨
 * Dynamic Routes : 파일명에 대괄호([]) 활용
   * 예를 들어, `pages/items/[id].tsx`은 `http://localhost:3000/items/2`로 접근 가능
+### Api
+* `pages/api` 하위에 api 파일 넣기 (따라서, 백엔드를 위한 서버 구축하지 않아도 됨)
+* Api Routes를 위한 규칙은 connection handler 함수를 export default 하면 됨
 
 ## Tailwind
 ### class 
@@ -177,12 +180,44 @@
 ### How to use
 * `schema.prisma` 파일
   * js로 DB 구조 및 타입 정의
+    * model들을 DB에 push하고 SQL migration을 자동으로 처리
   * prisma는 주어진 정보를 통해 client 생성 (자동 완성 기능 제공)
 * Prima Studio
   * Visual Database Browser
   * DB를 위한 Admin Panel
 * [Prisma Extention VSC](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
   * syntax highlighting, formatting, auto-completion, jump-to-definition and linting for .prisma files.
+* PrismaClient
+  * `@prisma/client` 설치
+  * `npx prisma generate` 입력 후, 콘솔 확인
+  * `node_modules\.prisma\client\index.d.ts` 파일 확인
+    * prisma가 schema를 확인하여 Typescript로 type을 만듦
+  * 브라우저에서는 import 시 보안상 이슈로 에러 발생됨
+    * 단, pages/api 하위 파일(백엔드)에서는 import 하여 사용 가능
+    * 예를 들어 아래 코드 입력 후 `http://localhost:3000/api/client-test` url 접근 시, User 테이블에 row 하나 생김
+    ```js
+    // pages/api/client-test
+    import { NextApiRequest, NextApiResponse } from "next";
+    import client from "../../libs/client";
+
+    export default async function handler(
+      req: NextApiRequest,
+      res: NextApiResponse
+    ) {
+      await client.user.create({
+        data: {
+          email: "test@example.com",
+          name: "myname",
+        },
+      });
+      res.json({
+        ok: true,
+        data: "xx",
+      });
+    }
+
+    ```
+
 ### Install
 * `npm i prisma -D`
 * `npx prisma init`
@@ -190,7 +225,18 @@
   * .env 파일 생성
 * Next steps 중 (in 터미널 콘솔)
   * `.env` 파일에 DATABASE_URL를 PlanetScale 주소로 변경
+    ```js
+    // pscale connect carrot-market 명령어가 실행된 상태여야 함 (터미널 켜진 상태로 유지)
+    DATABASE_URL="mysql://127.0.0.1:3306/carrot-market"
+    ```
   * `schema.prisma` 에 privider를 "mysql"로 변경
+* `npm install @prisma/client`
+  * client 초기화
+    * `/libs/client.ts` 파일 생성
+    ```js
+    import { PrismaClient } from '@prisma/client';
+    export default new PrismaClient();
+    ```
 ### Model Example
 * `schema.prisma` 파일에 User model 정의
 ```prisma
@@ -208,21 +254,89 @@
   * @default(autoincrement()) : 따로 건들지 않으면 1, 2, 3 으로 증가
   * ? (optional) : not required
   * @unique : unique value
-  * @updatedAt : updated when user's info changed 
+  * @updatedAt : updated when user's info changed
+```sh
+> npx prisma db push
+```
+  * planetscale에서 [MySQL 버전의 schema 확인 가능](https://app.planetscale.com/emmayoo9663/carrot-market/main)
+```sh
+> npx prisma studio
+```
 
 ## [PlanetScale](https://planetscale.com/)
 * MySQL과 호환되는 serverless DB platform
   * DB platform : they give you DB
   * serverless : we don't have to manage, maintain, secure, upgrade and those things for a server
-  * **MySQL-compatible**
+  * **MySQL-compatible** 
   * downtime : db가 꺼지지 않음
-* **[Vitess](https://vitess.io/)**
-  * auto-scaling
+* **[Vitess](https://vitess.io/)** 를 사용함
+  * Scalable. Reliable. MySQL-compatible. Cloud-native. Database.
   * High Availability : db의 복사본을 저장 (replica)
-  * etc...
-* CLI
+  * 대량의 connections, tables와 다양한 서버들을 scaling 가능
+    * 즉, DB를 잘게 쪼개서 여러 서버에 분산시키는 데에 특화되어 있음
+  * MySQL에는 있지만 Vitess 없는 몇가지 (Because It's MySQL-compatible. It's **not** a MySQL server platform!!)
+    * foreign key Constraint (하지만, prisma를 통해 확인 가능)
+      ```prisma
+      datasource db {
+        provider     = "mysql"
+        url          = env("DATABASE_URL")
+        relationMode = "prisma"
+      }
+      ```
+      <details>
+      <summary>Preview feature "referentialIntegrity" is deprecated.</summary>
+
+      ```prisma
+      generator client {
+        provider        = "prisma-client-js"
+        previewFeatures = ["referentialIntegrity"]
+      }
+
+      datasource db {
+        provider             = "mysql"
+        url                  = env("DATABASE_URL")
+        referentialIntegrity = "prisma"
+      }
+      ```
+      </details>
+### Install
+* [CLI](https://github.com/planetscale/cli#installation)
   * 좋은 개발자 경험 (DX) 제공
-  * create Branch for DB (like git) 
+  * create Branch for DB (like git)
+  ```shell
+  # PowerShell (version 5.1 or later)
+  > Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
+  > irm get.scoop.sh | iex
+  > scoop bucket add pscale https://github.com/planetscale/scoop-bucket.git
+  > scoop install pscale mysql
+  > pscale auth login
+  > pscale region list # check a region (ap-northeast)
+  > pscale database create carrot-market --region ap-northeast # https://app.planetscale.com/emmayoo9663/carrot-market
+  > pscale connect carrot-market # secure tunnel
+  ```
+  * `pscale connect` 명령어
+    * secure tunnel
+    * 실제 password를 .env 등 파일에 저장하지 않고도, 컴퓨터와 PlanetScale 연결 가능
+    * MySQL을 2번 설치할 필요 없음 (컴퓨터용 & PlanetScale용)
+    * 단, 명령어 실행 후 터미널을 켜놓고 있어야 함
+      <details>
+      <summary>다시 접근하는 방법</summary>
+
+      ```
+      > dir ~\scoop
+      > cd .\shims
+      > ./pscale connect carrot-market
+      ```
+      </details>
+### Etc
+<details>
+<summary>account</summary>
+
+```
+emmayoo9663@gmail.com
+B!1~6
+```
+</details>
 
 ## Tips
 ### icons
