@@ -217,7 +217,6 @@
     }
 
     ```
-
 ### Install
 * `npm i prisma -D`
 * `npx prisma init`
@@ -338,6 +337,15 @@ B!1~6
 ```
 </details>
 
+## React Hook Form (v7)
+* Less code, Better validation, Better Errors (set, clear, display)
+* Don't deal with events
+* Have control over inputs
+* Easier Inputs
+### Install
+* `npm i react-hook-form`
+
+
 ## Tips
 ### icons
 * [heroicons](https://heroicons.com/)
@@ -351,3 +359,19 @@ B!1~6
   * width 설정
   * display: block
   * margin: auto
+### form in React without library
+  ```js
+  const onInputChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const { currentTarget: { value } } = event;
+    setInputValue(value);
+  };
+  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (inputValue === "") setErrorMessage("It is required");
+      // ...
+    };
+  ```
+  ```html
+  <input type="text" minLength=3 required />
+  ```
+  * minLength와 required는 html의 validation으로 개발자 도구에서 지우면 유효성 검사하지 않는 문제 발생
