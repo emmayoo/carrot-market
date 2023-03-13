@@ -390,3 +390,19 @@ const { register, watch, handleSubmit, formState: { errors }, reset } = useForm<
   <input type="text" minLength=3 required />
   ```
   * minLength와 required는 html의 validation으로 개발자 도구에서 지우면 유효성 검사하지 않는 문제 발생
+### Content-Type
+* request.body는 request 내용의 인코딩을 기준으로 parse 됨
+```js
+// fetch
+fetch("/api/users/enter", {
+  method: "POST",
+  body: JSON.stringify(data),
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// api
+...
+req.body.email // Content-Type이 없는 경우, undefined 반환됨
+```
