@@ -342,9 +342,24 @@ B!1~6
 * Don't deal with events
 * Have control over inputs
 * Easier Inputs
+### [useForm](https://react-hook-form.com/api/useform/)
+```js
+const { register, watch, handleSubmit, formState: { errors }, reset } = useForm<LoginForm>({
+  mode: "onSubmit", // onSubmit (Default), onChange, onBlur
+  // defaultValues: {}
+});
+```
+### RegisterOptions
+* HTML에서도 제공하는 옵션 포함
+* `validate` : customized validation
+  ```js
+  validate: {
+    notAllowedGmail: (value) =>
+      !value.includes("@gmail.com") || "gmail is not allowed",
+  },
+  ```
 ### Install
 * `npm i react-hook-form`
-
 
 ## Tips
 ### icons
