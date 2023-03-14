@@ -41,7 +41,10 @@
   * 예를 들어, `pages/items/[id].tsx`은 `http://localhost:3000/items/2`로 접근 가능
 ### Api
 * `pages/api` 하위에 api 파일 넣기 (따라서, 백엔드를 위한 서버 구축하지 않아도 됨)
-* Api Routes를 위한 규칙은 connection handler 함수를 export default 하면 됨
+* Api Routes를 위한 규칙은 connection handler 함수를 **export default** 하면 됨
+* function은 무조건 export default하기 (그렇지 않으면, 작동하지 않음)
+* url에 접근 시, NextJS가 실행할 function을 return하는 function을 만들어야 함
+* NextJS는 req와 res를 제공
 
 ## Tailwind
 ### class 
