@@ -264,6 +264,22 @@
 ```sh
 > npx prisma studio
 ```
+### upsert
+* insert & update
+* 예를 들어, email 또는 phone으로 사용자가 없으면 생성하기
+```js
+const payload = email ? { email } : { phone: +phone };
+const user = await client.user.upsert({
+  where: {
+    ...payload,
+  },
+  create: {
+    name: "Anonymous",
+    ...payload,
+  },
+  update: {},
+});
+```
 
 ## [PlanetScale](https://planetscale.com/)
 * MySQL과 호환되는 serverless DB platform
@@ -408,4 +424,18 @@ fetch("/api/users/enter", {
 // api
 ...
 req.body.email // Content-Type이 없는 경우, undefined 반환됨
+```
+### prisma error 중 
+* Argument phone: Got invalid value '01012345678' on prisma.findUniqueUser. Provided String, expected Int.
+```js
+user = await client.user.findUnique({ where: { phone: +phone } });
+if (!user) {
+  user = await client.user.create({
+    data: {
+      name: "Anonymous",
+      phone: +phone,
+    },
+  });
+  console.info(user);
+}
 ```

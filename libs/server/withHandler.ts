@@ -7,6 +7,7 @@ export default function withHandler(method: 'GET' | 'POST' | 'DELETE', fn: (req:
 		try {
 			await fn(req, res);
 		} catch (error) {
+			console.log(error);
 			return res.status(500).json({error})
 		}
 	}
