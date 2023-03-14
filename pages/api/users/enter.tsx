@@ -1,4 +1,4 @@
-import withHandler from "../../../libs/server/withHandler";
+import withHandler from "@libs/server/withHandler";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
