@@ -280,6 +280,41 @@ const user = await client.user.upsert({
   update: {},
 });
 ```
+### create / connectOrCreate / connect
+* create : 새로운 token과 새로운 user를 만듦
+* connect : 새로운 token을 이미 존재하는 user와 연결
+* connectOrCreate : user를 찾고 있으면 이미 존재하는 user 없으면 새로운 user를 만들어 연결
+```js
+// connect
+const token = await client.token.create({
+  data: {
+    payload: "uniqe string",
+    user: {
+      connect: {
+        id: user.id,
+      },
+    },
+  },
+});
+
+// connectOrCreate
+const token = await client.token.create({
+  data: {
+    payload: "uniqe string",
+    user: {
+      connectOrCreate: {
+        where: {
+          ...payload,
+        },
+        create: {
+          name: "Anonymous",
+          ...payload,
+        },
+      },
+    },
+  },
+});
+```
 
 ## [PlanetScale](https://planetscale.com/)
 * MySQL과 호환되는 serverless DB platform
@@ -379,6 +414,18 @@ const { register, watch, handleSubmit, formState: { errors }, reset } = useForm<
   ```
 ### Install
 * `npm i react-hook-form`
+
+## [Twilio](https://ahoy.twilio.com/)
+* SMS 보내기, robocall 또는 폰 번호를 숨기기 등 다양한 기능 제공
+* `npm install twilio`
+### Etc
+<details>
+<summary>account</summary>
+
+```
+emmayoo9663@gmail.com
+B!1~6
+```
 
 ## Tips
 ### icons
