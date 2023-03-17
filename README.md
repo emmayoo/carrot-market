@@ -427,6 +427,11 @@ emmayoo9663@gmail.com
 B!1~6
 ```
 
+## [SendGrid](https://sendgrid.com/solutions/email-api/)
+* Email 보내기
+* 계정은 Twilio와 동일함
+* `npm install --save @sendgrid/mail`
+
 ## Tips
 ### icons
 * [heroicons](https://heroicons.com/)
