@@ -315,6 +315,41 @@ const token = await client.token.create({
   },
 });
 ```
+### Relation between Models Example
+* `schema.prisma` 파일
+```prisma
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String?  @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tokens    Token[]
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  payload   String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+```
+  * User.id === Token.userId
+  * `onDelete: Cascade` 옵션으로 User를 지우면 연결된 Token도 지워짐
+* api 코드 중
+  ```js
+  const info = await client.token.findUnique({
+    where: {
+      payload: token,
+    },
+    include: { user: true },
+  });
+  ```
+  * token 정보를 가져올 때, user 정보도 함께 가져오고 싶으면 `include` 옵션 사용하기
 
 ## [PlanetScale](https://planetscale.com/)
 * MySQL과 호환되는 serverless DB platform
@@ -431,6 +466,23 @@ B!1~6
 * Email 보내기
 * 계정은 Twilio와 동일함
 * `npm install --save @sendgrid/mail`
+* **쓰려다 실패해서 nodemailer로 변경** (nodemailer 네이버 연동 참고)
+
+## [iron session](https://github.com/vvo/iron-session)
+* 서명, 암호화된 쿠키를 사용하는 NodeJS 무상태 세션 도구
+* backend에서 iron session을 설정하여 authentication(인증) 가능
+* 사용자에게 암호화된 쿠키를 주고, 사용자는 요청을 보낼 때 받은 쿠키를 함께 보내서 인증 가능
+### 장점
+1. JWT 가 아님
+  * JWT는 user 객체와 그 안에 signature를 함께 보내서 사용자를 신뢰할 수 있는지 보는 것. user 객체를 확인 가능
+    * { user: 1 } => { user:1, signature: abc }
+  * iron session은 user 객체를 암호화한 값을 쿠키로 주고 받아 복호화하여 사용. user 객체 확인 불가능. 따라서, 여러 정보를 넣을 수 있음
+    * { user: 1 } => abadfstefjlsg => { user: 1 }
+2. 백엔드를 구축할 필요가 없음
+  * api handler를 `withIronSessionApiRoute`로 감싸주면, iron session이 알아서 요청 객체 안에 session user를 보내줌
+    * `req.session`으로 접근 가능
+### Helper 함수
+* 
 
 ## Tips
 ### icons

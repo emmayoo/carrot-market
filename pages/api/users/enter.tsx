@@ -13,7 +13,7 @@ async function handler(
 ) {
   const { email, phone } = req.body;
 
-  const profile = email ? { email } : phone ? { phone: +phone } : null;
+  const profile = email ? { email } : phone ? { phone } : null;
   if (!profile) return res.status(400).json({ ok: false });
 
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
