@@ -45,6 +45,26 @@
 * function은 무조건 export default하기 (그렇지 않으면, 작동하지 않음)
 * url에 접근 시, NextJS가 실행할 function을 return하는 function을 만들어야 함
 * NextJS는 req와 res를 제공
+### Hooks
+* useRouter
+  ```js
+  import { useRouter } from "next/router";
+  ...
+  const router = useRouter();
+  router.push("/"); // redirect
+  router.replace("/"); // replace
+  ```
+  * redirect : history 남음
+    * history : 브라우저에 페이지가 성공적으로 load 되는 경우, `<title>`가 남음 (Http status code 401, 404의 경우 안 남음)
+  * replace : history 안 남음
+### Head
+```js
+import Head from "next/head";
+...
+<Head>
+  <title>Home</title>
+</Head>
+```
 
 ## Tailwind
 ### class 
@@ -481,8 +501,23 @@ B!1~6
 2. 백엔드를 구축할 필요가 없음
   * api handler를 `withIronSessionApiRoute`로 감싸주면, iron session이 알아서 요청 객체 안에 session user를 보내줌
     * `req.session`으로 접근 가능
-### Helper 함수
-* 
+
+## [NextAuth.js](https://next-auth.js.org/)
+* Next.js에서 authentication 구현을 도와주는 package
+* 사용자 로그인 여부를 알려주는 hook과 function 등을 제공
+  * carrot market 강의에서 쓰지 않음 (대신, iron session과 SWR을 사용하여 직전 구현)
+* custom하기 조금 까다로움
+* 바로 앱 만들기 좋음
+* DB 필요 없음
+  * 어떤 사용자가 로그인되었는지 모르지만 로그인 여부는 알 수 있음
+* prisma와 연결 [방법](https://authjs.dev/reference/adapter/prisma)
+  * PrismaAdapter 필요함
+  * 필수로 있어야하는 model schema 작성해야함
+
+## SWR
+* 데이터를 불러오는 작업을 위한 여러 hooks를 가짐
+* NextJS를 만든 사람이 만듦
+* `npm install swr`
 
 ## Tips
 ### icons

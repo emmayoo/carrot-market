@@ -2,6 +2,7 @@ import twilio from "twilio";
 import smtpTransport from "@libs/server/email";
 import client from "@libs/server/client";
 import withHandler, { type ResponseType } from "@libs/server/withHandler";
+import { withApiSession } from "@libs/server/withSession";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -70,4 +71,6 @@ async function handler(
   });
 }
 
-export default withHandler("POST", handler);
+export default withApiSession(
+  withHandler({ method: "POST", handler, isPrivate: false })
+);

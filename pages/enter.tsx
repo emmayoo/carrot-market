@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { cls } from "@libs/client/utils";
@@ -23,6 +24,8 @@ interface MutationResult {
 }
 
 const Enter: NextPage = () => {
+  const router = useRouter();
+
   const [enter, { loading, data, error }] =
     useMutation<MutationResult>("/api/users/enter");
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
@@ -48,6 +51,12 @@ const Enter: NextPage = () => {
     if (tokenLoading) return;
     confirmToken(formData);
   };
+
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
 
   return (
     <div className="mt-16 px-4">
