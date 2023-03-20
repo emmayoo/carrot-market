@@ -514,10 +514,23 @@ B!1~6
   * PrismaAdapter 필요함
   * 필수로 있어야하는 model schema 작성해야함
 
-## SWR
+## SWR (Stale-While-Revalidate)
+* HTTP 캐시 무효화 전략
+* 페이지 다시 진입하면 캐시에 있는 데이터를 먼저 보여주고, 뒤에서 API를 요청하여 데이터가 이전과 변경이 있으면 화면과 캐시 업데이트
+* SWR을 사용하면 컴포넌트가 데이터의 변경을 계속 다종으로 감지할 수 있음
+  * UI 변경이 빠름
+  * 최신 데이터 반영
+  * 로딩표시기 없음
 * 데이터를 불러오는 작업을 위한 여러 hooks를 가짐
 * NextJS를 만든 사람이 만듦
 * `npm install swr`
+### useSWR
+* useSWR(key, fetcher)
+  * key : API url & cache key
+  * fetcher : useSWR의 첫번째 인자 값이 fetcher 함수의 첫번째 인자로 넘어감
+* 사용자가 브라우저의 다른 탭으로 다시 돌아왔을 때 데이터를 새로고침 (재조회)
+### SWRConfig : Global Configuration
+* 모든 페이지에 적용되어 fetcher와 같은 기본값을 지정할 수 있는 provider
 
 ## Tips
 ### icons
