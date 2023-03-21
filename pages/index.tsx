@@ -1,14 +1,22 @@
 import Head from "next/head";
+import useSWR from "swr";
+
 import useUser from "@libs/client/useUser";
 import Layout from "@components/layout";
 import Item from "@components/item";
 import FloatingButton from "@components/floating-button";
 
 import type { NextPage } from "next";
+import type { Products } from "@prisma/client";
+
+interface ProductResponse {
+  ok: boolean;
+  products: Products[];
+}
 
 const Home: NextPage = () => {
-  const user = useUser();
-  console.info(user);
+  const { user, isLodaing } = useUser();
+  const { data } = useSWR<ProductResponse>("/api/products");
 
   return (
     <Layout title="home" hasTabBar>
@@ -16,14 +24,14 @@ const Home: NextPage = () => {
         <title>Home</title>
       </Head>
       <div className="flex flex-col space-y-5 py-10">
-        {[...Array(10)].map((_, i) => (
+        {data?.products.map((product) => (
           <Item
-            key={i}
-            id={i}
-            title={`Iphone${i}`}
-            price={1000 * i}
-            hearts={i * 3}
-            comments={i * 2}
+            key={product.id}
+            id={product.id}
+            title={product.name}
+            price={product.price}
+            hearts={product.id * 3}
+            comments={product.id * 2}
           />
         ))}
         <FloatingButton href="/products/upload">

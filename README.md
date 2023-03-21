@@ -40,11 +40,13 @@
 * Dynamic Routes : 파일명에 대괄호([]) 활용
   * 예를 들어, `pages/items/[id].tsx`은 `http://localhost:3000/items/2`로 접근 가능
 ### Api
-* `pages/api` 하위에 api 파일 넣기 (따라서, 백엔드를 위한 서버 구축하지 않아도 됨)
+* `/pages/api` 하위에 api 파일 넣기 (따라서, 백엔드를 위한 서버 구축하지 않아도 됨)
 * Api Routes를 위한 규칙은 connection handler 함수를 **export default** 하면 됨
 * function은 무조건 export default하기 (그렇지 않으면, 작동하지 않음)
 * url에 접근 시, NextJS가 실행할 function을 return하는 function을 만들어야 함
 * NextJS는 req와 res를 제공
+* `/pages/api/items/[...id].ts` 파일 & api url `/api/items/1/2/3`
+  * `const { id } = req.query; // [1, 2, 3]` (타입이 string[])
 ### Hooks
 * useRouter
   ```js
@@ -57,6 +59,10 @@
   * redirect : history 남음
     * history : 브라우저에 페이지가 성공적으로 load 되는 경우, `<title>`가 남음 (Http status code 401, 404의 경우 안 남음)
   * replace : history 안 남음
+  * `router.query`
+    * dynamic routing 인 url의 데이터 조회 가능
+    * 예를 들어, `/pages/items/[id].tsx` & `example.com/items/1` 페이지 접근 시 `router.query.id`의 값은 1
+    * 하지만, 라우터가 mount 중 일때 **undefined**
 ### Head
 ```js
 import Head from "next/head";
