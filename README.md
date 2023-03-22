@@ -537,6 +537,11 @@ B!1~6
 * 사용자가 브라우저의 다른 탭으로 다시 돌아왔을 때 데이터를 새로고침 (재조회)
 ### SWRConfig : Global Configuration
 * 모든 페이지에 적용되어 fetcher와 같은 기본값을 지정할 수 있는 provider
+### mutate
+* [bound-mutate](https://swr.vercel.app/docs/mutation#bound-mutate) 을 사용하여 **Optimistic UI Update** 구현 가능
+  * 예를 들어, `mutate({ ...data }, true)`
+  * 첫번째 arg는 업데이트 될 캐쉬 데이터
+  * 두번쨰 인자는 캐쉬 업데이트 후 백엔드에 요청을 통해 검증하는 용도로 (default: true)
 
 ## Tips
 ### icons
@@ -597,3 +602,5 @@ if (!user) {
   console.info(user);
 }
 ```
+### Optimistic UI Update
+* 요청이 정상적으로 수행될 것이라 생각하고, UI 변경하기 (성공 응답 기다리지 않음)

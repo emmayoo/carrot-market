@@ -8,7 +8,11 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { id } = req.query;
+  const {
+    session: { user },
+    query: { id },
+  } = req;
+
   if (!id) return res.json({ ok: false });
 
   const product = await client.product.findUnique({
@@ -26,9 +30,36 @@ async function handler(
     },
   });
 
+  const terms = product?.name
+    .split(" ")
+    .map((word) => ({ name: { contains: word } }));
+
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: product?.id,
+        },
+      },
+    },
+  });
+
+  const favorite = await client.favorite.findFirst({
+    where: {
+      productId: product?.id,
+      userId: user?.id,
+    },
+    select: {
+      id: true,
+    },
+  });
+
   res.json({
     ok: true,
     product,
+    isLiked: Boolean(favorite),
+    relatedProducts,
   });
 }
 

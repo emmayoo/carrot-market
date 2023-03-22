@@ -12,8 +12,13 @@ async function handler(
 
   if(req.method === "GET") {
     const products = await client.product.findMany({
-      where: {
-        userId: user?.id
+      include: {
+        // favorites: true, // favorites의 모든 정보를 가져오기 때문에 안 됨
+        _count: {
+          select: {
+            favorites: true
+          }
+        }
       }
     })
   
