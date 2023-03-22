@@ -11,6 +11,7 @@ async function handler(
   const {
     session: { user },
     query: { id },
+    body: { isLiked }
   } = req;
 
   if (!id) return res.status(500).json({ ok: false });
@@ -22,13 +23,13 @@ async function handler(
     },
   });
 
-  if (fav) {
+  if (fav && !isLiked) {
     await client.favorite.delete({
       where: {
         id: fav.id,
       },
     });
-  } else {
+  } else if (!fav && isLiked) {
     await client.favorite.create({
       data: {
         user: {
