@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 
 import useMutation from "@libs/client/useMutation";
+import useDebounce from "@libs/client/useDebounce";
 import { cls } from "@libs/client/utils";
 
 import Layout from "@components/layout";
@@ -25,7 +26,7 @@ interface ProductDetailResponse {
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  // const { mutate } = useSWRConfig();
+  // const { mutate } = useSWRConfig(); // 다른 페이지의 데이터를 mutate 가능
 
   const id = router.query.id;
 
@@ -35,10 +36,12 @@ const ItemDetail: NextPage = () => {
 
   const [toggleFavorite] = useMutation(`/api/products/${id}/favorite`);
 
+  const { debounce } = useDebounce();
+
   const onFavoriteClick = () => {
     boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
     // mutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
-    toggleFavorite({ isLiked: !data?.isLiked });
+    debounce(() => toggleFavorite({ isLiked: !data?.isLiked }));
   };
 
   if (!(data && data.product)) return <SkeletonItem />;

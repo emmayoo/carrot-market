@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 
 import useMutation from "@libs/client/useMutation";
+import useDebounce from "@libs/client/useDebounce";
 import { cls } from "@libs/client/utils";
 
 import Layout from "@components/layout";
@@ -38,6 +39,8 @@ const CommunityPostDetail: NextPage = () => {
     postId ? `/api/posts/${postId}` : null
   );
   const [wondering] = useMutation(`/api/posts/${router.query.id}/wondering`);
+  const { debounce } = useDebounce();
+
   const onClickWondering = () => {
     if (!data) return;
 
@@ -58,7 +61,7 @@ const CommunityPostDetail: NextPage = () => {
       false
     );
 
-    wondering({});
+    debounce(() => wondering({}));
   };
 
   return (
