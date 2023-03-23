@@ -14,27 +14,20 @@ function useMutation<T = any>(
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
   const [error, setError] = useState<any>();
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
   const mutation = (payload: any) => {
-    clearTimeout(timeoutId);
-
-    const newTimeoutId: NodeJS.Timeout = setTimeout(() => {
-      setLoading(true);
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((respose) => respose.json())
-        .then(setData)
-        .catch(setError)
-        .finally(() => setLoading(false));
-    }, delay);
-
-    setTimeoutId(() => newTimeoutId);
+    setLoading(true);
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((respose) => respose.json())
+      .then(setData)
+      .catch(setError)
+      .finally(() => setLoading(false));
   };
 
   return [mutation, { loading, data, error }];

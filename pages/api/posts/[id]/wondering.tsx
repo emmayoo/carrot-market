@@ -11,33 +11,32 @@ async function handler(
   const {
     session: { user },
     query: { id },
-    body: { isLiked }
   } = req;
 
   if (!id) return res.status(400).json({ ok: false });
 
-  const fav = await client.favorite.findFirst({
+  const isExisted = await client.wondering.findFirst({
     where: {
-      productId: +id,
       userId: user?.id,
+      postId: +id,
     },
   });
 
-  if (fav && !isLiked) {
-    await client.favorite.delete({
+  if (isExisted) {
+    await client.wondering.delete({
       where: {
-        id: fav.id,
+        id: isExisted.id,
       },
     });
-  } else if (!fav && isLiked) {
-    await client.favorite.create({
+  } else {
+    await client.wondering.create({
       data: {
         user: {
           connect: {
             id: user?.id,
           },
         },
-        product: {
+        post: {
           connect: {
             id: +id,
           },
@@ -51,6 +50,4 @@ async function handler(
   });
 }
 
-export default withApiSession(
-  withHandler({ methods: ["POST"], handler, isPrivate: false })
-);
+export default withApiSession(withHandler({ methods: ["POST"], handler }));
