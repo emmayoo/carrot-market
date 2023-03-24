@@ -12,6 +12,8 @@ import Button from "@components/button";
 
 import type { NextPage } from "next";
 import type { Answer, Post, User } from "@prisma/client";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 interface AnswerWithUser extends Answer {
   user: User;
@@ -32,13 +34,28 @@ interface CommunityPostResponse {
   isWondering: boolean;
 }
 
+interface AnswerForm {
+  answer: string;
+}
+
+interface AnswerReponse {
+  ok: boolean;
+  answer: Answer;
+}
+
 const CommunityPostDetail: NextPage = () => {
+  const { register, handleSubmit, reset } = useForm<AnswerForm>();
   const router = useRouter();
   const postId = router.query.id;
   const { data, mutate } = useSWR<CommunityPostResponse>(
     postId ? `/api/posts/${postId}` : null
   );
-  const [wondering] = useMutation(`/api/posts/${router.query.id}/wondering`);
+  const [wondering, { loading }] = useMutation(
+    `/api/posts/${router.query.id}/wondering`
+  );
+  const [postAnswer, { data: answerData, loading: answerLoading }] =
+    useMutation<AnswerReponse>(`/api/posts/${router.query.id}/answer`);
+
   const { debounce } = useDebounce();
 
   const onClickWondering = () => {
@@ -62,7 +79,17 @@ const CommunityPostDetail: NextPage = () => {
     );
 
     debounce(() => wondering({}));
+    // if (!loading) wondering({});
   };
+
+  const onValid = (formData: AnswerForm) => {
+    if (answerLoading) return;
+    postAnswer(formData);
+  };
+
+  useEffect(() => {
+    if (answerData && answerData.ok) reset();
+  }, [answerData, reset]);
 
   return (
     <Layout canGoBack>
@@ -147,14 +174,15 @@ const CommunityPostDetail: NextPage = () => {
             </div>
           ))}
         </div>
-        <div className="px-4">
+        <form className="px-4" onSubmit={handleSubmit(onValid)}>
           <TextArea
             name="description"
             placeholder="Answer this question!"
             required
+            register={register("answer", { required: true, minLength: 5 })}
           />
-          <Button text="Reply" />
-        </div>
+          <Button text={answerLoading ? "loading..." : "Reply"} />
+        </form>
       </div>
     </Layout>
   );
