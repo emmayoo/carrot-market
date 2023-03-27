@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import useMutation from "@libs/client/useMutation";
+import useCoords from "@libs/client/useCoords";
 
 import Layout from "@components/layout";
 import TextArea from "@components/textarea";
@@ -23,11 +24,12 @@ interface WriteResponse {
 const Write: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<WriteForm>();
+  const { latitude, longitude } = useCoords();
   const [post, { loading, data }] = useMutation<WriteResponse>("/api/posts");
 
   const onValid = (data: WriteForm) => {
     if (loading) return;
-    post(data);
+    post({ ...data, latitude, longitude });
   };
 
   useEffect(() => {

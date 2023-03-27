@@ -18,6 +18,7 @@
   * Tailwind 클래스명 자동 완성 Extension
 
 ## NextJS Framework
+* **페이지가 초기 상태값으로 pre-generate 됨**
 ### Global Styles in NextJS
   * [참고 영상](https://nomadcoders.co/nextjs-fundamentals/lectures/3443)
   * App Component
