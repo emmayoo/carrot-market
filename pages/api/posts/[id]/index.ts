@@ -34,6 +34,7 @@ async function handler(
           user: {
             select: { id: true, name: true, avatar: true },
           },
+          createdAt: true,
         },
       },
       _count: {

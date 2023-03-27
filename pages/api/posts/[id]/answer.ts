@@ -16,12 +16,17 @@ async function handler(
 
   if (!id) return res.status(400).json({ ok: false });
 
-  const isExisted = await client.wondering.findFirst({
+  const isExisted = await client.post.findFirst({
     where: {
       userId: user?.id,
-      postId: +id,
+      id: +id,
+    },
+    select: {
+      id: true,
     },
   });
+
+  if (!isExisted) return res.status(404).redirect("/404");
 
   const newAnswer = await client.answer.create({
     data: {
@@ -33,7 +38,7 @@ async function handler(
       },
       post: {
         connect: {
-          id: +id,
+          id: isExisted.id,
         },
       },
     },

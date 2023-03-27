@@ -16,7 +16,6 @@ async function handler(
     },
     // include: { user: true }, // user 정보 포함하기
   });
-  console.log(info);
 
   if (!info) return res.status(400).end();
 
