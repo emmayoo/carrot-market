@@ -1,4 +1,4 @@
-import client from '@libs/server/client';
+import client from "@libs/server/client";
 import withHandler, { type ResponseType } from "@libs/server/withHandler";
 import { withApiSession } from "@libs/server/withSession";
 
@@ -10,26 +10,33 @@ async function handler(
 ) {
   const { user } = req.session;
 
-  if(req.method === "GET") {
+  if (req.method === "GET") {
     const products = await client.product.findMany({
+      where: {
+        records: {
+          every: {
+            kind: "Favorite",
+          },
+        },
+      },
       include: {
         // favorites: true, // favorites의 모든 정보를 가져오기 때문에 안 됨
         _count: {
           select: {
-            favorites: true
-          }
-        }
-      }
-    })
-  
+            records: true,
+          },
+        },
+      },
+    });
+
     res.json({
       ok: true,
-      products
+      products,
     });
   }
   if (req.method === "POST") {
     const { name, price, description } = req.body;
-  
+
     const product = await client.product.create({
       data: {
         name,
@@ -38,17 +45,17 @@ async function handler(
         imageUrl: "just-for-now",
         user: {
           connect: {
-            id: user?.id
-          }
-        }
-      }
-    })
-  
+            id: user?.id,
+          },
+        },
+      },
+    });
+
     res.json({
       ok: true,
-      product
+      product,
     });
-  }  
+  }
 }
 
 export default withApiSession(

@@ -45,10 +45,11 @@ async function handler(
     },
   });
 
-  const favorite = await client.favorite.findFirst({
+  const favorite = await client.record.findFirst({
     where: {
       productId: product?.id,
       userId: user?.id,
+      kind: "Favorite",
     },
     select: {
       id: true,

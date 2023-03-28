@@ -11,27 +11,29 @@ async function handler(
   const {
     session: { user },
     query: { id },
-    body: { isLiked }
+    body: { isLiked },
   } = req;
 
   if (!id) return res.status(400).json({ ok: false });
 
-  const fav = await client.favorite.findFirst({
+  const fav = await client.record.findFirst({
     where: {
       productId: +id,
       userId: user?.id,
+      kind: "Favorite",
     },
   });
 
   if (fav && !isLiked) {
-    await client.favorite.delete({
+    await client.record.delete({
       where: {
         id: fav.id,
       },
     });
   } else if (!fav && isLiked) {
-    await client.favorite.create({
+    await client.record.create({
       data: {
+        kind: "Favorite",
         user: {
           connect: {
             id: user?.id,

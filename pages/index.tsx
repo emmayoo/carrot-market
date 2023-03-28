@@ -11,7 +11,7 @@ import type { Product } from "@prisma/client";
 
 interface ProductWithCount extends Product {
   _count: {
-    favorites: number;
+    records: number;
   };
 }
 
@@ -30,13 +30,13 @@ const Home: NextPage = () => {
         <title>Home</title>
       </Head>
       <div className="flex flex-col space-y-5 py-10">
-        {data?.products.map((product) => (
+        {data?.products?.map((product) => (
           <Item
             key={product.id}
             id={product.id}
             title={product.name}
             price={product.price}
-            hearts={product._count.favorites}
+            hearts={product._count.records}
             comments={product.id * 2}
           />
         ))}
