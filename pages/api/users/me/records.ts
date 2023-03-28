@@ -14,23 +14,33 @@ async function handler(
     query: { kind },
   } = req;
 
-  if (kind !== "string" || !Object.keys(Kind).includes(kind)) {
+  console.info(kind)
+
+  if (typeof kind !== "string" || !Object.keys(Kind).includes(kind)) {
     return res.status(400).json({ ok: false });
   }
 
-  const favorites = await client.record.findMany({
+  const records = await client.record.findMany({
     where: {
       id: user?.id,
       kind: kind as Kind,
     },
     include: {
-      product: true,
+      product: {
+        include: {
+          _count: {
+            select: {
+              records: true
+            },
+          }
+        }
+      },
     },
   });
 
   res.json({
     ok: true,
-    favorites,
+    records,
   });
 }
 
