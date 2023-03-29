@@ -1,7 +1,6 @@
 import Head from "next/head";
 import useSWR from "swr";
 
-import useUser from "@libs/client/useUser";
 import Layout from "@components/layout";
 import Item from "@components/item";
 import FloatingButton from "@components/floating-button";
@@ -21,7 +20,6 @@ interface ProductResponse {
 }
 
 const Home: NextPage = () => {
-  const { user, isLodaing } = useUser();
   const { data } = useSWR<ProductResponse>("/api/products");
 
   return (

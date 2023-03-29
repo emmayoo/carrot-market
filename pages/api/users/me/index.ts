@@ -14,6 +14,12 @@ async function handler(
     },
   });
 
+  if (!profile) {
+    return res.status(400).json({
+      ok: false,
+    });
+  }
+
   res.json({
     ok: true,
     profile,
