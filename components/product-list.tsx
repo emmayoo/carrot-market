@@ -27,7 +27,7 @@ export default function ProductList({ kind }: ProductListProps) {
   const { data } = useSWR<RecordResponse>(`/api/users/me/records?kind=${kind}`);
   return data ? (
     <>
-      {data?.records.map((record) => (
+      {data?.records?.map((record) => (
         <Item
           id={record.id}
           key={record.id}
