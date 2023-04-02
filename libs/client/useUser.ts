@@ -5,7 +5,7 @@ import useSWR from "swr";
 export default function useUser() {
   const router = useRouter();
   const path = router.pathname;
-  const { data, error } = useSWR(path === '/enter' ? null : "/api/users/me");
+  const { data, error } = useSWR(path === '/enter' ? null : "/api/users/me", url => fetch(url).then(res => res.json()));
 
   useEffect(() => {
     if (data && !data.ok) {

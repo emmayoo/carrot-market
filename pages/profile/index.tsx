@@ -1,7 +1,6 @@
 import Link from "next/link";
 import useSWR from "swr";
 
-import useUser from "@libs/client/useUser";
 import { cls } from "@libs/client/utils";
 
 import Layout from "@components/layout";
@@ -18,8 +17,7 @@ interface ReviewResponse {
   reviews: ReviewWithUser[];
 }
 
-const Profile: NextPage = () => {
-  const { user, isLodaing } = useUser();
+const Profile: NextPage<{ user: User }> = ({ user }) => {
   const { data, isLoading: reviewLoading } =
     useSWR<ReviewResponse>("/api/reviews");
 
