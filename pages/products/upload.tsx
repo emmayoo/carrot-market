@@ -10,7 +10,7 @@ import TextArea from "@components/textarea";
 import Button from "@components/button";
 
 import type { NextPage } from "next";
-import type { Products } from "@prisma/client";
+import type { Product } from "@prisma/client";
 
 interface UploadProductForm {
   name: string;
@@ -20,7 +20,7 @@ interface UploadProductForm {
 
 interface UploadProductMutation {
   ok: boolean;
-  product: Products;
+  product: Product;
 }
 
 const Upload: NextPage = () => {
@@ -84,7 +84,7 @@ const Upload: NextPage = () => {
           name="description"
           label="Description"
         />
-        <Button text={loading ? "loading..." : "Upload item"} />
+        <Button loading={loading} text="Upload item" />
       </form>
     </Layout>
   );

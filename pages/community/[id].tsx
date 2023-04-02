@@ -184,7 +184,7 @@ const CommunityPostDetail: NextPage = () => {
             required
             register={register("answer", { required: true, minLength: 5 })}
           />
-          <Button text={answerLoading ? "loading..." : "Reply"} />
+          <Button loading={answerLoading} text="Reply" />
         </form>
       </div>
     </Layout>
