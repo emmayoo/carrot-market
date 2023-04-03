@@ -48,6 +48,10 @@
 * NextJS는 req와 res를 제공
 * `/pages/api/items/[...id].ts` 파일 & api url `/api/items/1/2/3`
   * `const { id } = req.query; // [1, 2, 3]` (타입이 string[])
+* NextJS와 api router만 쓴다면, NextJS severless 환경에서는 실시간을 만들 수 없음
+  * Web Socket(실시간)을 쓸 수 없는 이유는 말 그대로 서버가 없기 때문
+  * 실시간을 만들기 위해서는 서버가 필요하고, 클라이언트와 연결을 계속 유지해야 함
+  * 눈속임으로 bound mutate 쓰는 방법이 있음 
 ### Hooks
 * useRouter
   ```js
@@ -377,6 +381,8 @@ model Token {
   });
   ```
   * token 정보를 가져올 때, user 정보도 함께 가져오고 싶으면 `include` 옵션 사용하기
+### seeding
+* DB에 가짜 데이터를 빠르게 생성 가능
 
 ## [PlanetScale](https://planetscale.com/)
 * MySQL과 호환되는 serverless DB platform
