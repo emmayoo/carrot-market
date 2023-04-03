@@ -383,6 +383,21 @@ model Token {
   * token 정보를 가져올 때, user 정보도 함께 가져오고 싶으면 `include` 옵션 사용하기
 ### seeding
 * DB에 가짜 데이터를 빠르게 생성 가능
+* 사용 방법
+  1. prisma/seed.ts 파일 생성
+  2. package.json 에 아래 추가후 `
+    ```json
+      "prisma": {
+        "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma\\seed.ts"
+      }
+    ```
+  3. `npx prisma db seed` 명령어 실행
+### [Connection Pool](https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient/connection-pool)
+* DB에 동시 접속을 얼마나 할지 정할 수 있음
+### 쿼리 조회
+```js
+const client = new PrismaClient({log: ["query"]});
+```
 
 ## [PlanetScale](https://planetscale.com/)
 * MySQL과 호환되는 serverless DB platform
@@ -611,3 +626,8 @@ if (!user) {
 ```
 ### Optimistic UI Update
 * 요청이 정상적으로 수행될 것이라 생각하고, UI 변경하기 (성공 응답 기다리지 않음)
+### Pagenation
+* Planet Scale는 DB를 읽고 쓰기에 따라 금액이 다름
+* 따라서, Prisma를 통해 쉽게 필요한 데이터만 조회 가능
+  * `take` & `skip`
+  * 단순 조회 (findUnique) 뿐만 아니라, 관계 조회 (include)에서도 사용 가능
