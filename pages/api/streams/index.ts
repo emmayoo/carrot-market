@@ -11,13 +11,13 @@ async function handler(
   const {
     session: { user },
     body: { name, price, description },
+    query: { page = 1 }
   } = req;
 
   if (req.method === "GET") {
     const streams = await client.stream.findMany({
-      where: {
-        userId: user?.id,
-      },
+      take: 10,
+      skip: 10 * (+page - 1)
     });
     res.json({ ok: true, streams });
   } else if (req.method === "POST") {

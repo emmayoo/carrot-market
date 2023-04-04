@@ -1,24 +1,43 @@
 import Link from "next/link";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 
 import Layout from "@components/layout";
 import FloatingButton from "@components/floating-button";
 
 import type { NextPage } from "next";
 import type { Stream } from "@prisma/client";
-
-interface StreamsResponse {
-  ok: boolean;
-  streams: Stream[];
-}
+import { useCallback, useEffect } from "react";
 
 const Streams: NextPage = () => {
-  const { data, isLoading } = useSWR<StreamsResponse>(`/api/streams`);
+  const getKey = (index: number) => `/api/streams?page=${index + 1}`;
+  const { data, isLoading, size, setSize } = useSWRInfinite(getKey);
+
+  const streams = data
+    ?.map((pageData) => pageData.streams)
+    .reduce((acc, curr) => [...acc, ...curr], []);
+
+  const handleScroll = useCallback(() => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight) {
+      if (isLoading) return;
+      setSize((prev) => prev + 1);
+    }
+  }, [isLoading, setSize]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   return (
     <Layout title="라이브" hasTabBar>
       <div className="divide-y-[1px] space-y-4">
-        {data?.streams.map((stream) => (
+        {streams?.map((stream: Stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
             <div className="pt-4 px-4 block">
               <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
