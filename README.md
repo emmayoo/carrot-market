@@ -565,6 +565,17 @@ B!1~6
   * 첫번째 arg는 업데이트 될 캐쉬 데이터
   * 두번쨰 인자는 캐쉬 업데이트 후 백엔드에 요청을 통해 검증하는 용도로 (default: true)
 
+## Cloudflare
+* 고정된 가격만 청구함 [참고](https://www.cloudflare.com/products/cloudflare-images/)
+  * Pay only for images stored and served Images are priced at $5 per 100,000 images stored and $1 per 100,000 images delivered — with no egress costs or additional charges for resizing and optimization.
+  * egress costs : 대역폭(bandwidth)에 요금을 내야 하는 것
+  * 이미지 리사이징이나 최적화에도 추가 요금 없음
+  * 따라서, 큰 이미지를 업로드해도 무료로 원하는 크기로 리사이징 해줌
+### Upload images
+1. Images dashboard - 관리자 권한이 있는 사람만 쓸 수 있음 (불편함)
+2. API token - 사용자와 클라우드 사이에서 이미지를 주고 받을 서버가 필요함 (하지만, 우리는 serverless!)
+3. Direct Creator Upload (*) - 사용자와 클라우드 사이에 서버는 있음. 단지, 이 서버의 역할은 사용자가 파일 업로드 했는지를 CF에 알리고, CF에게서 받은 empty file URL을 돌려주는 역할. 사용자는 이 URL에 파일을 업로드함.
+
 ## Tips
 ### icons
 * [heroicons](https://heroicons.com/)
@@ -631,3 +642,11 @@ if (!user) {
 * 따라서, Prisma를 통해 쉽게 필요한 데이터만 조회 가능
   * `take` & `skip`
   * 단순 조회 (findUnique) 뿐만 아니라, 관계 조회 (include)에서도 사용 가능
+### 브라우저 이미지
+* 브라우저(JS)는 내 컴퓨터 파일에 접근 불가능
+* 즉, 내가 업로드한 파일만 접근 가능 (브라우저의 메모리에 있는 파일을 얻을 수 있음)
+  ```ts
+  const file = img[0] as FileList;
+  const url = URL.createObjectURL(file);
+  console.info(url);
+  ```
