@@ -575,6 +575,12 @@ B!1~6
 1. Images dashboard - 관리자 권한이 있는 사람만 쓸 수 있음 (불편함)
 2. API token - 사용자와 클라우드 사이에서 이미지를 주고 받을 서버가 필요함 (하지만, 우리는 serverless!)
 3. Direct Creator Upload (*) - 사용자와 클라우드 사이에 서버는 있음. 단지, 이 서버의 역할은 사용자가 파일 업로드 했는지를 CF에 알리고, CF에게서 받은 empty file URL을 돌려주는 역할. 사용자는 이 URL에 파일을 업로드함.
+### Image Resizing
+* Cloudflare가 url을 바탕으로 resizing 해줌
+  * 일반적으로는, 사용자가 이미지를 업로드할 때 자동으로 이미지를 여러 버전으로 리사이징 함
+* [Variants](https://dash.cloudflare.com/c11241038b0fc4ccc653ed4b84cb170b/images/variants)
+  * 기본적으로 이미지의 variant는 **public**임
+  * fit - scale down: w:h 비율 유지, crop: 지정한 w*h으로 자름
 
 ## Tips
 ### icons

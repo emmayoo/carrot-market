@@ -1,19 +1,25 @@
 import Link from "next/link";
 
+import { getCloudFlareDeliveryUrl } from "@libs/client/utils";
+
 interface ItemProps {
   id: number;
+  imageUrl: string;
   title: string;
   price: number;
   hearts: number;
   comments: number;
 }
 
-const Item = ({ id, title, price, hearts, comments }: ItemProps) => {
+const Item = ({ id, imageUrl, title, price, hearts, comments }: ItemProps) => {
   return (
     <Link href={`/products/${id}`}>
       <div className="flex px-4 pt-5 cursor-pointer justify-between">
         <div className="flex space-x-4">
-          <div className="w-20 h-20 bg-gray-400 rounded-md" />
+          <img
+            src={getCloudFlareDeliveryUrl(imageUrl)}
+            className="w-20 h-20 bg-gray-400 rounded-md"
+          />
           <div className="pt-2 flex flex-col">
             <h3 className="text-sm font-medium text-gray-900">{title}</h3>
             <span className="font-medium mt-1 text-gray-900">${price}</span>

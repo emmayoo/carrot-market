@@ -2,6 +2,10 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
 import useMutation from "@libs/client/useMutation";
+import {
+  getCloudFlareDeliveryUrl,
+  getUploadedImageId,
+} from "@libs/client/utils";
 
 import Layout from "@components/layout";
 import Button from "@components/button";
@@ -37,24 +41,35 @@ const EditProfile: NextPage<{ user: User }> = ({ user }) => {
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
 
-  const onValid = ({ email, phone, name, avatar }: EditProfileForm) => {
+  const onValid = async ({ email, phone, name, avatar }: EditProfileForm) => {
     if (loading) return;
-    if (name === "")
+    if (name === "") {
       return setError("formErrors", {
         message: "name is required.",
       });
-    if (email === "" && phone === "")
+    }
+
+    if (email === "" && phone === "") {
       return setError("formErrors", {
         message: "Emmail or Phone number is required. You need to choose one.",
       });
+    }
 
-    editProfile({ email, phone, name });
+    if (avatar && avatar.length > 0) {
+      const avatarId = await getUploadedImageId(avatar[0], `a_${user.id}`);
+
+      editProfile({ email, phone, name, avatarId });
+    } else {
+      editProfile({ email, phone, name });
+    }
   };
 
   useEffect(() => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
+    if (user?.avatar)
+      setAvatarPreview(getCloudFlareDeliveryUrl(user.avatar, "avatar"));
   }, [setValue, user]);
 
   useEffect(() => {

@@ -32,6 +32,7 @@ const Home: NextPage = () => {
           <Item
             key={product.id}
             id={product.id}
+            imageUrl={product.imageUrl}
             title={product.name}
             price={product.price}
             hearts={product._count.records}

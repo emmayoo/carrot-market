@@ -1,7 +1,7 @@
 import Link from "next/link";
 import useSWR from "swr";
 
-import { cls } from "@libs/client/utils";
+import { cls, getCloudFlareDeliveryUrl } from "@libs/client/utils";
 
 import Layout from "@components/layout";
 
@@ -25,7 +25,14 @@ const Profile: NextPage<{ user: User }> = ({ user }) => {
     <Layout title="나의 캐럿" hasTabBar>
       <div className="py-10 px-4">
         <div className="flex items-center space-x-3">
-          <div className="w-16 h-16 bg-slate-500 rounded-full" />
+          {user?.avatar ? (
+            <img
+              src={getCloudFlareDeliveryUrl(user.avatar, "avatar")}
+              className="w-16 h-16 bg-slate-500 rounded-full"
+            />
+          ) : (
+            <div className="w-16 h-16 bg-slate-500 rounded-full" />
+          )}
           <div className="flex flex-col">
             <span className="font-medium text-gray-900">{user?.name}</span>
             <Link href="/profile/edit">

@@ -4,7 +4,7 @@ import useSWR, { useSWRConfig } from "swr";
 
 import useMutation from "@libs/client/useMutation";
 import useDebounce from "@libs/client/useDebounce";
-import { cls } from "@libs/client/utils";
+import { cls, getCloudFlareDeliveryUrl } from "@libs/client/utils";
 
 import Layout from "@components/layout";
 import Button from "@components/button";
@@ -24,7 +24,7 @@ interface ProductDetailResponse {
   relatedProducts: Product[];
 }
 
-const ItemDetail: NextPage = () => {
+const ItemDetail: NextPage<{ user: User }> = ({ user }) => {
   const router = useRouter();
   // const { mutate } = useSWRConfig(); // 다른 페이지의 데이터를 mutate 가능
 
@@ -52,18 +52,30 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack>
       <div className="px-4 py-4">
         <div className="mb-8">
-          <div className="h-96 bg-slate-300" />
+          <img
+            src={getCloudFlareDeliveryUrl(info.imageUrl)}
+            className="h-96 bg-slate-300"
+          />
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
-            <div className="w-12 h-12 rounded-full bg-slate-300" />
+            {info.user.avatar ? (
+              <img
+                src={getCloudFlareDeliveryUrl(info.user.avatar, "avatar")}
+                className="w-12 h-12 rounded-full bg-slate-300"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-slate-300" />
+            )}
             <div>
               <p className="text-sm font-medium text-gray-700">
                 {info.user.name}
               </p>
-              <Link href={`/users/profiles/${info.user.id}`}>
-                <p className="text-xs font-medium text-gray-500">
-                  View profile &rarr;
-                </p>
-              </Link>
+              {info.user.id === user.id && (
+                <Link href={`/profile/edit`}>
+                  <p className="text-xs font-medium text-gray-500">
+                    View profile &rarr;
+                  </p>
+                </Link>
+              )}
             </div>
           </div>
           <div className="mt-5">
@@ -123,7 +135,10 @@ const ItemDetail: NextPage = () => {
             {data.relatedProducts?.map((product) => (
               <Link key={product.id} href={`/products/${product.id}`}>
                 <div>
-                  <div className="h-56 w-full mb-4 bg-slate-300" />
+                  <img
+                    src={getCloudFlareDeliveryUrl(product.imageUrl)}
+                    className="h-56 w-full mb-4 bg-slate-300"
+                  />
                   <h3 className="text-gray-700 -mb-1">{product.name}</h3>
                   <span className="text-sm font-medium text-gray-900">
                     ${product.price}
