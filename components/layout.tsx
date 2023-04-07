@@ -1,6 +1,8 @@
-import React from "react";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React from "react";
+
 import { cls } from "@libs/client/utils";
 
 interface LayoutProps {
@@ -8,6 +10,7 @@ interface LayoutProps {
   canGoBack?: boolean;
   hasTabBar?: boolean;
   children: React.ReactNode;
+  seoTitle?: string;
 }
 
 export default function Layout({
@@ -15,6 +18,7 @@ export default function Layout({
   canGoBack,
   hasTabBar,
   children,
+  seoTitle,
 }: LayoutProps) {
   const router = useRouter();
   const onClick = () => {
@@ -23,6 +27,9 @@ export default function Layout({
 
   return (
     <div>
+      <Head>
+        <title>{seoTitle} | Carrot Market</title>
+      </Head>
       <div
         className={cls(
           !canGoBack ? "justify-center" : "",
