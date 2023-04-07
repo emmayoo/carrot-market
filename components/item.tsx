@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { getCloudFlareDeliveryUrl } from "@libs/client/utils";
@@ -16,7 +17,10 @@ const Item = ({ id, imageUrl, title, price, hearts, comments }: ItemProps) => {
     <Link href={`/products/${id}`}>
       <div className="flex px-4 pt-5 cursor-pointer justify-between">
         <div className="flex space-x-4">
-          <img
+          <Image
+            alt="Product Image"
+            width={80}
+            height={80}
             src={getCloudFlareDeliveryUrl(imageUrl)}
             className="w-20 h-20 bg-gray-400 rounded-md"
           />

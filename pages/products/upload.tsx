@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -68,7 +69,10 @@ const Upload: NextPage = () => {
       <form className="p-4 space-y-4" onSubmit={handleSubmit(onValid)}>
         <div>
           {photoPreview ? (
-            <img
+            <Image
+              alt="Product Image"
+              width={540}
+              height={188}
               src={photoPreview}
               className="w-full h-48 rounded-md"
               {...register("photo")}

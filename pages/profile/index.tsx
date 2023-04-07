@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import useSWR from "swr";
 
@@ -26,7 +27,10 @@ const Profile: NextPage<{ user: User }> = ({ user }) => {
       <div className="py-10 px-4">
         <div className="flex items-center space-x-3">
           {user?.avatar ? (
-            <img
+            <Image
+              alt="Avatar Image"
+              width={64}
+              height={64}
               src={getCloudFlareDeliveryUrl(user.avatar, "avatar")}
               className="w-16 h-16 bg-slate-500 rounded-full"
             />

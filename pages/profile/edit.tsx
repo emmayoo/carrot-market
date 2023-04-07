@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
@@ -91,7 +92,10 @@ const EditProfile: NextPage<{ user: User }> = ({ user }) => {
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
         <div className="flex items-center space-x-3">
           {avatarPreview ? (
-            <img
+            <Image
+              alt="Avatar Image"
+              width={56}
+              height={56}
               src={avatarPreview}
               className="w-14 h-14 rounded-full bg-slate-500"
             />

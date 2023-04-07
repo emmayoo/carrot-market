@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 
 import useMutation from "@libs/client/useMutation";
 import useDebounce from "@libs/client/useDebounce";
@@ -52,13 +53,20 @@ const ItemDetail: NextPage<{ user: User }> = ({ user }) => {
     <Layout canGoBack>
       <div className="px-4 py-4">
         <div className="mb-8">
-          <img
-            src={getCloudFlareDeliveryUrl(info.imageUrl)}
-            className="h-96 bg-slate-300"
-          />
+          <div className="relative h-96">
+            <Image
+              alt="Product Image"
+              fill={true}
+              src={getCloudFlareDeliveryUrl(info.imageUrl)}
+              className="bg-slate-300 object-fill"
+            />
+          </div>
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
             {info.user.avatar ? (
-              <img
+              <Image
+                alt="User Avatar"
+                height={48}
+                width={48}
                 src={getCloudFlareDeliveryUrl(info.user.avatar, "avatar")}
                 className="w-12 h-12 rounded-full bg-slate-300"
               />
@@ -69,7 +77,7 @@ const ItemDetail: NextPage<{ user: User }> = ({ user }) => {
               <p className="text-sm font-medium text-gray-700">
                 {info.user.name}
               </p>
-              {info.user.id === user.id && (
+              {info.user.id === user?.id && (
                 <Link href={`/profile/edit`}>
                   <p className="text-xs font-medium text-gray-500">
                     View profile &rarr;
@@ -135,7 +143,10 @@ const ItemDetail: NextPage<{ user: User }> = ({ user }) => {
             {data.relatedProducts?.map((product) => (
               <Link key={product.id} href={`/products/${product.id}`}>
                 <div>
-                  <img
+                  <Image
+                    alt="Similar Products Image"
+                    width={264}
+                    height={224}
                     src={getCloudFlareDeliveryUrl(product.imageUrl)}
                     className="h-56 w-full mb-4 bg-slate-300"
                   />

@@ -76,6 +76,20 @@ import Head from "next/head";
   <title>Home</title>
 </Head>
 ```
+### [next/image](https://nextjs.org/docs/api-reference/next/image) 
+* [Image Component](https://nextjs.org/docs/basic-features/image-optimization) 를 사용하면 무료로 이미지 최적화를 할 수 있음
+  * Lazy loading
+  * local image가 있을 때, 해당 이미지에 대한 placeholder를 만듦
+  * remote image는 next js image server가 Cloudflare에 이미지를 요청하고 받아와 이미지를 압축하고 포맷을 바꿔줌
+    * local image 만큼의 최적화는 못함(?)
+    * 예를 들어, placeholder
+    * `blurDataURL` prop으로 placeholder 이미지 넣을 수 있음
+  * 기본적으로는 webp를 줌 (?)
+  * `layout="fill"` (**depricated**)
+    * css `object-fit`와 함께 잘 쓰임
+    * 대신 `fill` prop 사용하기
+* NextJS는 `/_next/image` API Handler를 가지고 무료로 이미지를 압축
+  * `q`(quality) query string 으로 품질 변경 가능
 
 ## Tailwind
 ### class 
@@ -656,3 +670,10 @@ if (!user) {
   const url = URL.createObjectURL(file);
   console.info(url);
   ```
+### `<Image />` 컴포넌트 오류
+* NextJS가 도메인 이름을 알 필요가 있다는 오류
+* 오류 내용
+```
+Error: Invalid src prop (https://imagedelivery.net/aPDiyG044pHV2EO8w7d39Q/33b14925-6f79-40d0-e336-cbf2c3bb1d00/avatar) on `next/image`, hostname "imagedelivery.net" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+```
