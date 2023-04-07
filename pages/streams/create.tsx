@@ -36,7 +36,7 @@ const Create: NextPage = () => {
 
   useEffect(() => {
     console.info(data);
-    if (data && data.ok) router.push(`/live/${data.stream.id}`);
+    if (data && data.ok) router.push(`/streams/${data.stream.id}`);
   }, [data, router]);
 
   return (

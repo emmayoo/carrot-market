@@ -595,6 +595,24 @@ B!1~6
 * [Variants](https://dash.cloudflare.com/c11241038b0fc4ccc653ed4b84cb170b/images/variants)
   * 기본적으로 이미지의 variant는 **public**임
   * fit - scale down: w:h 비율 유지, crop: 지정한 w*h으로 자름
+### Cloudflare Stream
+* recording : stream을 마치면 cloudflare가 영상을 replay 할 수 있도록 해줌
+  * recoring options
+    1. mode - automatic : live steam을 끝낼 때마다 영상이 나옴
+    2. timeoutSeconds : stream이 끊어진지 얼마 후에 영상으로 바꿀 지 선택
+* simulcast : stream된 영상을 트위치나 유튜브에 업로드 해줌
+* payments
+  * streaming : 사람들이 시청(delivered)하는 시간 당 지불 (영상 크기나 시간 X)
+  * storage : 1000 분(min) 당 지불 
+* live streaming을 위한 SW
+  1. OBS Studio : 영상 녹화와 실시간 방송을 할 수 있는 무료 및 공개 소프트웨어
+  2. Live Now
+  3. etc...
+* RTMP (real-time message protocol)
+  * Live Streaming Protocol
+  * OBS나 Live Now와 같은 app이 지원하는 것
+  * app(트위치, 유튜브 등)에 live streaming을 넣고 싶을 때, 자체적으로 live streaming client를 만들 필요가 없음
+  * 왜냐면, RTMP로 통신하기 때문
 
 ## Tips
 ### icons

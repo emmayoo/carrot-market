@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 
 import Layout from "@components/layout";
@@ -6,7 +7,6 @@ import FloatingButton from "@components/floating-button";
 
 import type { NextPage } from "next";
 import type { Stream } from "@prisma/client";
-import { useCallback, useEffect } from "react";
 
 const Streams: NextPage = () => {
   const getKey = (index: number) => `/api/streams?page=${index + 1}`;

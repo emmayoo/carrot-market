@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["imagedelivery.net"],
+    domains: [
+      "imagedelivery.net",
+      "customer-agvv7lozdmtt9jl0.cloudflarestream.com",
+    ],
   },
 };
 

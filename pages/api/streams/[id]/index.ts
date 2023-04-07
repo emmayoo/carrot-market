@@ -1,6 +1,7 @@
 import client from "@libs/server/client";
 import withHandler, { type ResponseType } from "@libs/server/withHandler";
 import { withApiSession } from "@libs/server/withSession";
+import { Stream } from "@prisma/client";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -10,6 +11,7 @@ async function handler(
 ) {
   const {
     query: { id },
+    session: { user },
   } = req;
 
   if (!id) return res.status(400).json({ ok: false });
@@ -33,6 +35,13 @@ async function handler(
       },
     },
   });
+
+  const isOwner = stream?.userId === user?.id;
+  if (stream && !isOwner) {
+    delete (stream as Partial<Stream>).cloudflareKey;
+    delete (stream as Partial<Stream>).cloudflareUrl;
+  }
+
   res.json({ ok: true, stream });
 }
 
