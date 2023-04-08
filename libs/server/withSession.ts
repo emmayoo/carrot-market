@@ -1,4 +1,4 @@
-import { withIronSessionApiRoute } from 'iron-session/next';
+import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 
 declare module "iron-session" {
   interface IronSessionData {
@@ -19,3 +19,6 @@ export const withApiSession = (fn: any) => {
 };
 
 // 2. redering 할 때, NextJS의 SSR에서 session을 받오는 함수
+export const withSsrSession = (fn: any) => {
+	return withIronSessionSsr(fn, cookieOptions);
+};

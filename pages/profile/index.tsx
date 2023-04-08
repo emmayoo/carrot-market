@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 
+import client from "@libs/server/client";
+import { withSsrSession } from "@libs/server/withSession";
 import { cls, getCloudFlareDeliveryUrl } from "@libs/client/utils";
 
 import Layout from "@components/layout";
 
-import type { NextPage } from "next";
+import type { NextPage, NextPageContext } from "next";
 import type { Review, User } from "@prisma/client";
 
 interface ReviewWithUser extends Review {
@@ -154,4 +156,31 @@ const Profile: NextPage<{ user: User }> = ({ user }) => {
   );
 };
 
-export default Profile;
+const Page: NextPage<{ profile: User }> = ({ profile }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/users/me": { ok: true, profile },
+        },
+      }}
+    >
+      <Profile user={profile} />
+    </SWRConfig>
+  );
+};
+
+export const getServerSideProps = withSsrSession(async function ({
+  req,
+}: NextPageContext) {
+  const profile = await client.user.findUnique({
+    where: { id: req?.session.user?.id },
+  });
+  return {
+    props: {
+      profile: JSON.parse(JSON.stringify(profile)),
+    },
+  };
+});
+
+export default Page;
