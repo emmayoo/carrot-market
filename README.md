@@ -90,6 +90,7 @@ import Head from "next/head";
     * 대신 `fill` prop 사용하기
 * NextJS는 `/_next/image` API Handler를 가지고 무료로 이미지를 압축
   * `q`(quality) query string 으로 품질 변경 가능
+### <a href="./NextJS.md">Deep Dive</a>
 
 ## Tailwind
 ### class 
@@ -695,3 +696,6 @@ if (!user) {
 Error: Invalid src prop (https://imagedelivery.net/aPDiyG044pHV2EO8w7d39Q/33b14925-6f79-40d0-e336-cbf2c3bb1d00/avatar) on `next/image`, hostname "imagedelivery.net" is not configured under images in your `next.config.js`
 See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
 ```
+### `/pages` 와 같은 레벨에 있는 폴더 접근
+* 같은 레벨에 있는 폴더는 `./xxx` 로 접근 가능
+* 예를 들어, `readdirSync("./posts");`
