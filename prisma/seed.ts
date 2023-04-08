@@ -13,7 +13,10 @@ async function main () {
 					connect: {
 						id: 1,
 					}
-				}
+				},
+				cloudflareId: '',
+				cloudflareUrl: '',
+				cloudflareKey: ''
 			}
 		})
 	})
