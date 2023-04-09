@@ -6,12 +6,13 @@ import useSWR from "swr";
 import useMutation from "@libs/client/useMutation";
 import useDebounce from "@libs/client/useDebounce";
 import { cls, getCloudFlareDeliveryUrl } from "@libs/client/utils";
+import client from "@libs/server/client";
 
 import Layout from "@components/layout";
 import Button from "@components/button";
 import SkeletonItem from "./SkeletonItem";
 
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import type { Product, User } from "@prisma/client";
 
 interface ProductWithUser extends Product {
@@ -25,27 +26,30 @@ interface ProductDetailResponse {
   relatedProducts: Product[];
 }
 
-const ItemDetail: NextPage<{ user: User }> = ({ user }) => {
+const ItemDetail: NextPage<ProductDetailResponse & { user: User }> = (
+  data,
+  user
+) => {
   const router = useRouter();
   // const { mutate } = useSWRConfig(); // 다른 페이지의 데이터를 mutate 가능
 
-  const id = router.query.id;
+  // const id = router.query.id;
 
-  const { data, mutate: boundMutate } = useSWR<ProductDetailResponse>(
-    id ? `/api/products/${id}` : null
-  );
+  // const { data, mutate: boundMutate } = useSWR<ProductDetailResponse>(
+  //   id ? `/api/products/${id}` : null
+  // );
 
-  const [toggleFavorite] = useMutation(`/api/products/${id}/favorite`);
+  // const [toggleFavorite] = useMutation(`/api/products/${id}/favorite`);
 
-  const { debounce } = useDebounce();
+  // const { debounce } = useDebounce();
 
-  const onFavoriteClick = () => {
-    boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
-    // mutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
-    debounce(() => toggleFavorite({ isLiked: !data?.isLiked }));
-  };
+  // const onFavoriteClick = () => {
+  //   boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
+  //   // mutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
+  //   debounce(() => toggleFavorite({ isLiked: !data?.isLiked }));
+  // };
 
-  if (!(data && data.product)) return <SkeletonItem />;
+  // if (!(data && data.product)) return <SkeletonItem />;
 
   const info = data.product;
 
@@ -95,7 +99,7 @@ const ItemDetail: NextPage<{ user: User }> = ({ user }) => {
             <div className="flex items-center justify-between space-x-2">
               <Button large text="Talk to seller" />
               <button
-                onClick={onFavoriteClick}
+                // onClick={onFavoriteClick}
                 className={cls(
                   "p-3 rounded-md flex items-center justify-center hover:bg-gray-100",
                   data?.isLiked
@@ -162,6 +166,72 @@ const ItemDetail: NextPage<{ user: User }> = ({ user }) => {
       </div>
     </Layout>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  if (!ctx?.params?.id) {
+    return {
+      props: {},
+    };
+  }
+
+  const product = await client.product.findUnique({
+    where: {
+      id: +ctx?.params?.id,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  const terms = product?.name
+    .split(" ")
+    .map((word) => ({ name: { contains: word } }));
+
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: product?.id,
+        },
+      },
+    },
+  });
+
+  const favorite = await client.record.findFirst({
+    where: {
+      productId: product?.id,
+      // userId: user?.id,
+      userId: 1,
+      kind: "Favorite",
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  return {
+    props: {
+      ok: true,
+      product: JSON.parse(JSON.stringify(product)),
+      relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
+      isLiked: Boolean(favorite),
+    },
+  };
 };
 
 export default ItemDetail;

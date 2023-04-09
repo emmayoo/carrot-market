@@ -189,5 +189,73 @@ export const withSsrSession = (fn: any) => {
 * `npm install --save gray-matter`
 ## getStaticPaths
 * static page를 미리 생성하기 위함
-* 동적 URL이 있는 페이지에서 getStaticProps를 쓸 때 필요
+* **동적 URL이 있는 페이지에서 getStaticProps를 쓸 때 필요**
 * 얼마나 많은 정적 페이지가 있는지 NextJS에게 알려줌
+* 예를 들어, 블로그 글 & md 파일 읽어서 페이지 만들기 등
+* 
+### fallback
+1. `fallback: false`
+	* 빌드 시에만 한 번 HTML 생성
+2. `fallback: "blocking"`
+   * 사용자의 요청에 따라 정적 페이지를 만들어야 할 때 사용 가능
+   * pre-generate할 수 없는 경우 (예를 들어, dynamic url이 DB 등에서 조회해야 하거나, 자주 바뀌거나, 데이터가 많은 경우)
+   * 페이지 진입 시, 미리 만들어진 HTML이 없으면 getStaticProps가 SSG를 작동하여 렌더링하고, 유저는 화면을 볼 수 있음
+     * 하지만, 페이지 생성하는 동안에 유저는 화면을 볼 수 없음
+   * **초기 진입 시 html 생성시 시간이 걸리고, 이후에는 빌드된 파일을 바로 보여주기 때문에 빠름**
+   * `npm run build`시 예를 들어 `.next/server/pages/products` 에 html이 없다가 해당 페이지 진입 시, dynamic url에 맞게 html 생성됨
+   * 서버 사이드 렌더링 + 최초 한 번만 생성
+   ```js
+   export const getStaticPaths: GetStaticPaths = () => {
+     return {
+       paths: [],
+       fallback: "blocking",
+     };
+   };
+   ```
+* `fallback: true`
+  * 페이지 생성하는 동안에 유저가 화면을 볼 수 있도록 함
+  * 페이지가 생성되면, 화면 갈아끼우기
+  ```js
+	if (router.isFallback) {
+    return (
+      <Layout title="Loaidng for youuuuuuu">
+        <span>I love you</span>
+      </Layout>
+    );
+  }
+	return (<Layout> ... </Layout>)
+	```
+## Recap
+* 페이지를 렌더링할 수 있는 방법
+  1. 완전히 서버단에서 렌더링 (getServerSideProps)
+    * 장 : 로딩표시기 없음
+    * 단 : 데이터를 전부 불러올 때까지 유저는 빈 화면 보게 됨
+  2. 초기 state로 HTML 생성 + api 데이터 조회 (NextJS 기본 방법)
+    * 장 : 초기 state로 초기 화면은 볼 수 있음
+    * 단 : 데이터 조회가 오래 걸릴 수 있음
+  3. build 시, 정적 페이지 만들기 (getStaticProps)
+	  * 데이터 변경이 있으면, 빌드를 새로 해야함
+# [Incremental Static Regeneration (ISR)](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)
+* 단계적 정적 재생성
+* 페이지에 로딩 상태가 전혀 나타나지 않고, 서버단에서 페이지를 렌더링하지 않아도 됨
+```js
+export async function getStaticProps() {
+  const res = await fetch('https://.../posts')
+  const posts = await res.json()
+
+  return {
+    props: {
+      posts,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    revalidate: 10, // In seconds
+  }
+}
+```
+  * 맨 처음 요청 이후와 10초 이전의 요청은 캐싱되며 즉시 유저에게 제공됨
+* `npm run build` & `npm run start` 로 서버 켜서 확인하기!!
+## [On-demand Revalidation](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation)
+* 수동으로 getStaticProps를 어디에서든 작동시킬 수 있음
+* api 핸들러에서 trigger 가능

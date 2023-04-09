@@ -27,6 +27,8 @@ async function handler(
       },
     });
 
+    await res.revalidate('/community'); // on-demand revalidate `/pages/community`
+
     res.json({
       ok: true,
       post,

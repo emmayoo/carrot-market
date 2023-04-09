@@ -3,6 +3,7 @@ import useSWR from "swr";
 
 import useCoords from "@libs/client/useCoords";
 import { getQueryString } from "@libs/client/utils";
+import client from "@libs/server/client";
 
 import Layout from "@components/layout";
 import FloatingButton from "@components/floating-button";
@@ -23,9 +24,9 @@ interface PostsResponse {
   posts: PostWithUser[];
 }
 
-const Community: NextPage = () => {
-  const geo = useCoords();
-  const { data } = useSWR<PostsResponse>("/api/posts" + getQueryString(geo));
+const Community: NextPage<PostsResponse> = (data) => {
+  // const geo = useCoords();
+  // const { data } = useSWR<PostsResponse>("/api/posts" + getQueryString(geo));
 
   return (
     <Layout title="동네생활" hasTabBar>
@@ -60,7 +61,7 @@ const Community: NextPage = () => {
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     ></path>
                   </svg>
-                  <span>궁금해요 {post._count.wonderings}</span>
+                  <span>궁금해요 {post._count?.wonderings}</span>
                 </span>
                 <span className="flex space-x-2 items-center text-sm">
                   <svg
@@ -77,7 +78,7 @@ const Community: NextPage = () => {
                       d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                     ></path>
                   </svg>
-                  <span>답변 {post._count.answers}</span>
+                  <span>답변 {post._count?.answers}</span>
                 </span>
               </div>
             </div>
@@ -103,5 +104,15 @@ const Community: NextPage = () => {
     </Layout>
   );
 };
+
+export async function getStaticProps() {
+  const posts = await client.post.findMany({ include: { user: true } });
+  return {
+    props: {
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
+    // revalidate: 10, // 10 초 마다 백그라운드에서 NextJS가 데이터를 조회한 후 HTML 다시 만듦
+  };
+}
 
 export default Community;

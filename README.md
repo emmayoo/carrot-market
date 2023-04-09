@@ -699,3 +699,5 @@ See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
 ### `/pages` 와 같은 레벨에 있는 폴더 접근
 * 같은 레벨에 있는 폴더는 `./xxx` 로 접근 가능
 * 예를 들어, `readdirSync("./posts");`
+### 빌드된 HTML 파일 확인
+* `npm run build` 후, `/.next/server/pages`
